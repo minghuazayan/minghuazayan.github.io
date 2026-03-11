@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>国际政治经济新闻统计系统</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="app">
+        <!-- Navigation -->
+        <nav class="navbar">
+            <div class="nav-brand">
+                <h1>🌍 国际政治经济新闻统计系统</h1>
+            </div>
+            <div class="nav-menu" id="navMenu">
+                <!-- Dynamic menu items -->
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Login Form -->
+            <div id="loginSection" class="section">
+                <div class="form-container">
+                    <h2>用户登录</h2>
+                    <form id="loginForm">
+                        <div class="form-group">
+                            <label>用户名</label>
+                            <input type="text" id="loginUsername" required>
+                        </div>
+                        <div class="form-group">
+                            <label>密码</label>
+                            <input type="password" id="loginPassword" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">登录</button>
+                        <button type="button" class="btn btn-secondary" onclick="showRegister()">注册新账号</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Register Form -->
+            <div id="registerSection" class="section" style="display: none;">
+                <div class="form-container">
+                    <h2>用户注册</h2>
+                    <form id="registerForm">
+                        <div class="form-group">
+                            <label>用户名</label>
+                            <input type="text" id="regUsername" required>
+                        </div>
+                        <div class="form-group">
+                            <label>邮箱</label>
+                            <input type="email" id="regEmail" required>
+                        </div>
+                        <div class="form-group">
+                            <label>密码</label>
+                            <input type="password" id="regPassword" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">注册</button>
+                        <button type="button" class="btn btn-secondary" onclick="showLogin()">返回登录</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Timeline View -->
+            <div id="timelineSection" class="section" style="display: none;">
+                <div class="section-header">
+                    <h2>📅 新闻时间线</h2>
+                    <div class="filters">
+                        <input type="date" id="startDate" class="date-input">
+                        <span>至</span>
+                        <input type="date" id="endDate" class="date-input">
+                        <select id="regionFilter" class="select-input">
+                            <option value="">所有地区</option>
+                            <option value="亚洲">亚洲</option>
+                            <option value="欧洲">欧洲</option>
+                            <option value="北美">北美</option>
+                            <option value="中东">中东</option>
+                            <option value="非洲">非洲</option>
+                            <option value="南美">南美</option>
+                            <option value="全球">全球</option>
+                        </select>
+                        <select id="importanceFilter" class="select-input">
+                            <option value="">所有重要度</option>
+                            <option value="5">⭐⭐⭐⭐⭐ 极重要</option>
+                            <option value="4">⭐⭐⭐⭐ 重要</option>
+                            <option value="3">⭐⭐⭐ 一般</option>
+                            <option value="2">⭐⭐ 较低</option>
+                            <option value="1">⭐ 低</option>
+                        </select>
+                        <button class="btn btn-primary" onclick="applyFilters()">筛选</button>
+                        <button class="btn btn-secondary" onclick="resetFilters()">重置</button>
+                    </div>
+                </div>
+                <div id="timelineContainer" class="timeline-container">
+                    <!-- Timeline items will be loaded here -->
+                </div>
+            </div>
+
+            <!-- News Detail View -->
+            <div id="newsDetailSection" class="section" style="display: none;">
+                <div class="news-detail-container">
+                    <button class="btn btn-back" onclick="showTimeline()">← 返回时间线</button>
+                    <div id="newsDetailContent">
+                        <!-- News detail will be loaded here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Add/Edit News Form -->
+            <div id="newsFormSection" class="section" style="display: none;">
+                <div class="form-container large">
+                    <h2 id="newsFormTitle">添加新闻</h2>
+                    <form id="newsForm">
+                        <input type="hidden" id="newsId">
+                        <div class="form-group">
+                            <label>标题 *</label>
+                            <input type="text" id="newsTitle" required>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>日期 *</label>
+                                <input type="date" id="newsDate" required>
+                            </div>
+                            <div class="form-group">
+                                <label>来源</label>
+                                <input type="text" id="newsSource">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>地区</label>
+                                <select id="newsRegion">
+                                    <option value="">选择地区</option>
+                                    <option value="亚洲">亚洲</option>
+                                    <option value="欧洲">欧洲</option>
+                                    <option value="北美">北美</option>
+                                    <option value="中东">中东</option>
+                                    <option value="非洲">非洲</option>
+                                    <option value="南美">南美</option>
+                                    <option value="全球">全球</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>重要度</label>
+                                <select id="newsImportance">
+                                    <option value="1">⭐ 低</option>
+                                    <option value="2">⭐⭐ 较低</option>
+                                    <option value="3" selected>⭐⭐⭐ 一般</option>
+                                    <option value="4">⭐⭐⭐⭐ 重要</option>
+                                    <option value="5">⭐⭐⭐⭐⭐ 极重要</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>内容 *</label>
+                            <textarea id="newsContent" rows="6" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>影响解读</label>
+                            <textarea id="newsImpact" rows="4" placeholder="分析该新闻可能产生的影响..."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>标签</label>
+                            <div id="tagsContainer" class="tags-checkboxes">
+                                <!-- Tags will be loaded here -->
+                            </div>
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary">保存</button>
+                            <button type="button" class="btn btn-secondary" onclick="showTimeline()">取消</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Admin Dashboard -->
+            <div id="adminSection" class="section" style="display: none;">
+                <div class="admin-tabs">
+                    <button class="tab-btn active" onclick="showAdminTab('users')">用户管理</button>
+                    <button class="tab-btn" onclick="showAdminTab('tags')">标签管理</button>
+                    <button class="tab-btn" onclick="showAdminTab('stats')">统计信息</button>
+                </div>
+
+                <!-- Users Management -->
+                <div id="usersTab" class="admin-tab">
+                    <h3>用户列表</h3>
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>用户名</th>
+                                <th>邮箱</th>
+                                <th>角色</th>
+                                <th>注册时间</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody id="usersTableBody">
+                            <!-- Users will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Tags Management -->
+                <div id="tagsTab" class="admin-tab" style="display: none;">
+                    <div class="admin-header">
+                        <h3>标签列表</h3>
+                        <button class="btn btn-primary" onclick="showAddTagForm()">添加标签</button>
+                    </div>
+                    <div id="tagsList" class="tags-grid">
+                        <!-- Tags will be loaded here -->
+                    </div>
+                </div>
+
+                <!-- Statistics -->
+                <div id="statsTab" class="admin-tab" style="display: none;">
+                    <h3>系统统计</h3>
+                    <div class="stats-grid" id="statsContainer">
+                        <!-- Stats will be loaded here -->
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Toast Notification -->
+        <div id="toast" class="toast"></div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
